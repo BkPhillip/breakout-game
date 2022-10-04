@@ -10,5 +10,3 @@ class Brick(Turtle):
         self.points = points
         self.pu()
         self.goto((x, y))
-
-

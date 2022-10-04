@@ -89,5 +89,4 @@ while game_on:
         ball.move_speed /= 1.5
 
 
-
 screen.exitonclick()
