@@ -1,6 +1,8 @@
 from turtle import Turtle
-FONT = ("Courier", 64, "normal")
-ALIGNMENT = "CENTER"
+from os.path import exists
+FONT = ("Calibri", 72, "normal")
+FONT_LARGE = ("Calibri", 112, "bold")
+
 
 class Scoreboard(Turtle):
     def __init__(self):
@@ -8,16 +10,21 @@ class Scoreboard(Turtle):
         self.color("white")
         self.pu()
         self.hideturtle()
+        if exists("high-score.txt"):
+            with open("high-score.txt", "r") as file:
+                self.high_score = int(file.read())
+        else:
+            self.high_score = 0
         self.score = 0
-        self.lives = 5
+        self.lives = 3
         self.update_scoreboard()
 
     def update_scoreboard(self):
         self.clear()
-        self.goto(350, 170)
-        self.write(self.score, align=ALIGNMENT, font=FONT)
-        self.goto(-350, 170)
-        self.write(f"x{self.lives}", align=ALIGNMENT, font=FONT)
+        self.goto(380, 170)
+        self.write(self.score, align="RIGHT", font=FONT)
+        self.goto(-380, 170)
+        self.write(f"x{self.lives}", align="LEFT", font=FONT)
 
     def score_points(self, points):
         self.score += points
@@ -27,7 +34,16 @@ class Scoreboard(Turtle):
         self.lives -= 1
         self.update_scoreboard()
 
-
-# Display points
-
-# Display lives
+    def game_over(self):
+        self.clear()
+        self.goto(0, 0)
+        self.write("GAME OVER", align="CENTER", font=FONT_LARGE)
+        self.goto(0, -90)
+        if self.score > self.high_score:
+            self.write(f"New High Score: {self.score}", align="CENTER", font=FONT)
+            with open("high-score.txt", "w") as file:
+                file.write(f"{self.score}")
+        else:
+            self.write(f"Score: {self.score}", align="CENTER", font=FONT)
+            self.goto(0, -180)
+            self.write(f"High Score: {self.high_score}", align="CENTER", font=FONT)
